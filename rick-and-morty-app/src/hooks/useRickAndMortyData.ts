@@ -23,7 +23,7 @@ const useRickAndMortyData = () => {
         } catch (error) {
           console.error('Failed to fetch characters:', error);
         } finally {
-          setIsLoading(false);  // Certifique-se de que `isLoading` seja definido como false aqui
+          setIsLoading(false);  
         }
       };
 
@@ -38,7 +38,7 @@ const useRickAndMortyData = () => {
           } catch (error) {
             console.error('Failed to load characters from storage:', error);
           } finally {
-            setIsLoading(false);  // Certifique-se de que `isLoading` seja definido como false aqui
+            setIsLoading(false);  
           }
     }
 
@@ -46,7 +46,7 @@ const useRickAndMortyData = () => {
         loadCharacters();
     }, []);
 
-    return { characters, isLoading };
+    return { characters, isLoading, setCharacters };
 }
 
 export default useRickAndMortyData
