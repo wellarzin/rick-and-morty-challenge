@@ -78,7 +78,7 @@ export default function CharacterList({
     try {
       await AsyncStorage.setItem("characters", JSON.stringify(charactersToSave));
     } catch (error) {
-      console.error("Failed to save characters to storage:", error);
+      console.error("Erro ao salvar personagens no LocalStorage:", error);
     }
   };
 
