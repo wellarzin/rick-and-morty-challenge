@@ -17,13 +17,13 @@ const AddCharacterModal: React.FC<AddCharacterModalProps> = ({ visible, onClose,
   
     const handleSave = () => {
       const newCharacter: Character = {
-        id: Date.now(), // Simulação de ID único
+        id: Date.now(), 
         name,
         status,
         species,
         gender,
         image,
-        type: "", // Se aplicável
+        type: "", 
       };
       onAddCharacter(newCharacter);
       onClose();
