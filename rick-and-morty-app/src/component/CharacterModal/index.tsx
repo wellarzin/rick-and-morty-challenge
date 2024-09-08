@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Modal, StyleSheet, Image, Button } from "react-native";
 import Character from "@/interfaces/Character";
 
+// Prop do modal de personagem
 interface CharacterModalProps {
   visible: boolean;
   onClose: () => void;

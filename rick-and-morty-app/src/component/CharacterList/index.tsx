@@ -13,12 +13,13 @@ import Character from "@/interfaces/Character";
 import CharacterModal from "../CharacterModal";
 import EditModal from "../EditModal";
 
+// Props da lista de personagens, praticamente a mais importante da aplicação
 interface CharacterListProps {
   searchTerm: string;
   filter: string;
   sortOrder: "asc" | "desc";
   characters: Character[];
-  setCharacters: (characters: Character[]) => void; 
+  setCharacters: (characters: Character[]) => void;
 }
 
 export default function CharacterList({
@@ -26,24 +27,27 @@ export default function CharacterList({
   filter,
   sortOrder,
   characters,
-  setCharacters, 
+  setCharacters,
 }: CharacterListProps) {
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
-  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
+  const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
+    null
+  );
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Esse useEffect está responsável por carregar os personagens da API e atualizar a lista de personagens filtrada e ordenada
   useEffect(() => {
     const getFilteredAndSortedCharacters = () => {
       let filtered = characters;
 
       if (filter !== "All") {
-        filtered = filtered.filter(character => character.status === filter);
+        filtered = filtered.filter((character) => character.status === filter);
       }
 
       if (searchTerm) {
-        filtered = filtered.filter(character =>
+        filtered = filtered.filter((character) =>
           character.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
@@ -57,41 +61,48 @@ export default function CharacterList({
       return filtered;
     };
 
-
     setFilteredCharacters(getFilteredAndSortedCharacters());
   }, [searchTerm, filter, sortOrder, characters]);
 
+  // Essa função é responsável por carregar os personagens do LocalStorage
   const loadCharactersFromStorage = async () => {
-    try{
-      const storedCharacters = await AsyncStorage.getItem('characters');
-      if(storedCharacters){
+    try {
+      const storedCharacters = await AsyncStorage.getItem("characters");
+      if (storedCharacters) {
         setCharacters(JSON.parse(storedCharacters));
       }
-    }catch(error){
+    } catch (error) {
       console.error("Erro ao carregar personagens do LocalStorage;", error);
-    }finally {
-      setIsLoading(false); 
+    } finally {
+      setIsLoading(false);
     }
-  }
+  };
 
+  // Essa função daqui serve para salvar os personagens no LocalStorage
   const saveCharactersToStorage = async (charactersToSave: Character[]) => {
     try {
-      await AsyncStorage.setItem("characters", JSON.stringify(charactersToSave));
+      await AsyncStorage.setItem(
+        "characters",
+        JSON.stringify(charactersToSave)
+      );
     } catch (error) {
       console.error("Erro ao salvar personagens no LocalStorage:", error);
     }
   };
 
+  // useEffect para carregar os personagens através da função loadCharactersFromStorage
   useEffect(() => {
     loadCharactersFromStorage();
   }, []);
 
+  // useEffect para salvar os personagens através da função saveCharactersToStorage
   useEffect(() => {
     if (!isLoading) {
       saveCharactersToStorage(characters);
     }
   }, [characters]);
 
+  // Funções para abrir e fechar o modal de click do personagem
   const openModal = (character: Character) => {
     setSelectedCharacter(character);
     setIsModalVisible(true);
@@ -102,6 +113,7 @@ export default function CharacterList({
     setSelectedCharacter(null);
   };
 
+  // Função para excluir um personagem
   const handleDelete = (id: number) => {
     Alert.alert(
       "Exclusão de Personagem",
@@ -126,12 +138,14 @@ export default function CharacterList({
     setIsModalVisible(false);
   };
 
+  // Função para editar um personagem
   const handleEdit = (character: Character) => {
     setSelectedCharacter(character);
     setIsEditModalVisible(true);
     setIsModalVisible(false);
   };
 
+  // Função para salvar as alterações feitas em algum personagem
   const saveEdit = (updatedCharacter: Character) => {
     const updatedCharacters = characters.map((char) =>
       char.id === updatedCharacter.id ? updatedCharacter : char
@@ -140,13 +154,11 @@ export default function CharacterList({
     setIsEditModalVisible(false);
   };
 
+  // Função para renderizar os personagens
   const renderItem = ({ item }: { item: Character }) => (
     <TouchableOpacity onPress={() => openModal(item)}>
       <View style={styles.card}>
-        <Image
-          source={{ uri: item.image }}
-          style={styles.image}
-        />
+        <Image source={{ uri: item.image }} style={styles.image} />
         <View style={styles.bgName}>
           <Text style={styles.name}>{item.name}</Text>
         </View>

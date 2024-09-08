@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { styles } from "./styles";
 import { View, TextInput } from "react-native";
 
+// Props do campo de search
 interface Search {
   searchTerm: string;
   setSearchTerm: (value: string) => void;

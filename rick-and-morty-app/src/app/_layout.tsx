@@ -2,6 +2,7 @@ import { Slot } from "expo-router";
 import { StatusBar } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen"
+import { useEffect, useCallback } from "react";
 
 import {
   useFonts,
@@ -19,8 +20,22 @@ export default function Layout() {
     Raleway_900Black,
   });
 
-  if(fontsLoaded) {
-    SplashScreen.hideAsync();
+// Função para ocultar o splash screen após carregar as fontes
+// basicamente esse bloco serve somente para carregar o conteúdo da aplicação somente depois que as fontes forem carregadas
+// para não quebrar nada do estilo da aplicação
+  const onFontsLoaded = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  useEffect(() => {
+    onFontsLoaded();
+  }, [onFontsLoaded]);
+
+
+  if (!fontsLoaded) {
+    return null;
   }
 
   return (

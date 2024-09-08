@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, View, Text, TextInput, Button, StyleSheet } from "react-native";
 import Character from "@/interfaces/Character";
 
+// Props do modal de adicionar personagem (do botão de adicionar)
 interface AddCharacterModalProps {
   visible: boolean;
   onClose: () => void;
@@ -15,6 +16,7 @@ const AddCharacterModal: React.FC<AddCharacterModalProps> = ({ visible, onClose,
     const [gender, setGender] = useState("");
     const [image, setImage] = useState("");
   
+    // Função para adicionar um novo personagem através do botão de adicionar
     const handleSave = () => {
       const newCharacter: Character = {
         id: Date.now(), 

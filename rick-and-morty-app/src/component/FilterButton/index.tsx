@@ -10,10 +10,13 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
+// Props do botão de adicionar personagem
 interface FilterButtonProps {
     onFilter: (status: string) => void;
     onSort: (order: "asc" | "desc") => void;
   }
+
+  // Botão de filtro que está localizado no Header 
 export default function FilterButton({
   onFilter,
   onSort,
@@ -22,6 +25,7 @@ export default function FilterButton({
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
+  // Funções para abrir e fechar o modal
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };

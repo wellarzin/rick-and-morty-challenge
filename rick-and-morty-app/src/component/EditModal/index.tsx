@@ -3,6 +3,7 @@ import { Modal, View, Text, TextInput, Button, StyleSheet } from "react-native";
 import Character from "@/interfaces/Character";
 import { useEffect } from "react";
 
+// Props do modal de editar personagem
 interface EditModalProps {
   character: Character;
   visible: boolean;
@@ -21,6 +22,7 @@ export default function EditModal({
   const [species, setSpecies] = useState(character?.species || "");
   const [gender, setGender] = useState(character?.gender || "");
 
+  // Esse useEffect é responsável por preencher os campos do modal com os valores do personagem
   useEffect(() => {
     setName(character?.name || "");
     setStatus(character?.status || "");
@@ -28,6 +30,7 @@ export default function EditModal({
     setGender(character?.gender || "");
   }, [character]);
 
+  // Função para salvar as alterações do personagem
   const handleSave = () => {
     if (character) [onSave({ ...character, name, status, species, gender })];
   };

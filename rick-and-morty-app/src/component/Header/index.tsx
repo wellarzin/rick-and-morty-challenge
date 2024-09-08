@@ -2,6 +2,7 @@ import {  Text, View } from "react-native";
 import { styles } from "./styles";
 import FilterButton from "@/component/FilterButton"
 
+// Props do header
 interface HeaderProps{
   onFilterChange: (filter: string) => void;
   onSortChange: (sortOrder: string) => void; 

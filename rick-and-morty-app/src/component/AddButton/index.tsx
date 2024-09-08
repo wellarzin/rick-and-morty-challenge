@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Image } from "react-native";
 
+// Props do botão de adicionar personagem
 interface AddCharacterButtonProps {
     onPress: () => void;
   }
