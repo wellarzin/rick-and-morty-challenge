@@ -1,7 +1,6 @@
 import {  Text, View } from "react-native";
 import { styles } from "./styles";
 import FilterButton from "@/component/FilterButton"
-import { useState } from "react";
 
 interface HeaderProps{
   onFilterChange: (filter: string) => void;
