@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   image: {
-    width: 156,
+    width: 152,
     height: 93,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
