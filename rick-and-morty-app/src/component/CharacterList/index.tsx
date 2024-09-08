@@ -3,12 +3,12 @@ import {
   View,
   Text,
   FlatList,
-  ActivityIndicator,
   Image,
   Alert,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Character from "@/interfaces/Character";
 import CharacterModal from "../CharacterModal";
 import EditModal from "../EditModal";
@@ -18,7 +18,7 @@ interface CharacterListProps {
   filter: string;
   sortOrder: "asc" | "desc";
   characters: Character[];
-  setCharacters: (characters: Character[]) => void; // Adiciona a função de atualização de personagens
+  setCharacters: (characters: Character[]) => void; 
 }
 
 export default function CharacterList({
@@ -26,12 +26,13 @@ export default function CharacterList({
   filter,
   sortOrder,
   characters,
-  setCharacters, // Recebe a função de atualização de personagens como prop
+  setCharacters, 
 }: CharacterListProps) {
   const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getFilteredAndSortedCharacters = () => {
@@ -56,8 +57,40 @@ export default function CharacterList({
       return filtered;
     };
 
+
     setFilteredCharacters(getFilteredAndSortedCharacters());
   }, [searchTerm, filter, sortOrder, characters]);
+
+  const loadCharactersFromStorage = async () => {
+    try{
+      const storedCharacters = await AsyncStorage.getItem('characters');
+      if(storedCharacters){
+        setCharacters(JSON.parse(storedCharacters));
+      }
+    }catch(error){
+      console.error("Erro ao carregar personagens do LocalStorage;", error);
+    }finally {
+      setIsLoading(false); 
+    }
+  }
+
+  const saveCharactersToStorage = async (charactersToSave: Character[]) => {
+    try {
+      await AsyncStorage.setItem("characters", JSON.stringify(charactersToSave));
+    } catch (error) {
+      console.error("Failed to save characters to storage:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadCharactersFromStorage();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      saveCharactersToStorage(characters);
+    }
+  }, [characters]);
 
   const openModal = (character: Character) => {
     setSelectedCharacter(character);
