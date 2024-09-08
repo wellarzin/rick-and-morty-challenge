@@ -1,15 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState, useEffect } from "react";
+import Character from "@/interfaces/Character";
 
-interface Character{
-    id: number;
-    name: string;
-    status: string;
-    species: string;
-    image: string;
-    gender: string;
-    type: string;
-}
 const useRickAndMortyData = () => {
     const [characters, setCharacters] = useState<Character[]>([]);
     const [isLoading, setIsLoading] = useState(true);
